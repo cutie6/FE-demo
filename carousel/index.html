@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>轮播图</title>
     <style>
         * {
             margin: 0;
@@ -73,16 +73,17 @@
 </head>
 
 <body>
+    <p>
+        无缝滑动的关键在于在第一页前放上最后一页，在最后一页后面再放上第一页。在最后一页点击后一页时，先滑动到放置在后边的第一页，滑动完成后立刻改变父元素的left值到排列在第二个的第一页。
+    </p>
     <div id="container">
         <div id="list" style="left: -600px;">
             <div>5</div>
             <div>1</div>
-            <!-- -600 -->
             <div>2</div>
             <div>3</div>
             <div>4</div>
             <div>5</div>
-            <!-- -3000 -->
             <div>1</div>
         </div>
        
@@ -97,8 +98,6 @@
             var next = document.getElementById('next');
 
             function animate(offset) {
-                //获取的是style.left，是相对左边获取距离，所以第一张图后style.left都为负值，
-                //且style.left获取的是字符串，需要用parseInt()取整转化为数字。
 
                 var newLeft = parseInt(list.style.left) + offset;
                 console.log(newLeft)
