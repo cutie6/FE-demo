@@ -86,7 +86,7 @@
             <div>5</div>
             <div>1</div>
         </div>
-       
+
         <a href="javascript:;" id="prev" class="arrow">&lt;</a>
         <a href="javascript:;" id="next" class="arrow">&gt;</a>
     </div>
@@ -100,7 +100,6 @@
             function animate(offset) {
 
                 var newLeft = parseInt(list.style.left) + offset;
-                console.log(newLeft)
 
                 $('#list').animate({ left: newLeft }, function () {
                     if (newLeft < -3000) {
