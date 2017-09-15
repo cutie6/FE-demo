@@ -1,8 +1,8 @@
 ###目录
 
-[多个滚动监听](/scrollspy)
+1.[多个滚动监听](/scrollspy)
 
-[轮播图](/carousel)
+2.[轮播图](/carousel)
 
-[自己实现jQuery与其中的.css()方法](/myJquery)
+3.[自己实现jQuery与其中的.css()方法](/myJquery)
 
