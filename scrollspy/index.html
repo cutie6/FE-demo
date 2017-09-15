@@ -53,6 +53,71 @@
 
 <body>
     <p>修改成了可以有多个固定导航的</p>
+    <p>js代码如下：</p>
+    <pre>
+        <code>
+(function ($, win, doc) {
+    var scroll_highlight = function (obj) {
+        return new scroll_rsilder(obj)
+    }
+    var scroll_rsilder = function (obj) {
+        this.init(obj)
+    }
+    scroll_rsilder.prototype = {
+        win_evet: function () {
+            var _this = this._this
+            $(win).on("scroll", function () {
+                var scrollTop = $(this).scrollTop();
+                _this.ele_evet(scrollTop);
+                
+            })
+        },
+        ele_evet: function (scrollTop) {
+            var _this = this._this
+            $(this.cloumn).each(function (index) {
+                var offsetTop = $(this).offset().top;
+                var xd = parseInt(offsetTop - scrollTop);
+                
+                //console.log(index, offsetTop, scrollTop, xd, _this)
+                
+                if (xd < _this.spacing) {
+                    $(_this.silder).eq(index).addClass(_this.curr).siblings().removeClass();
+                }
+            })
+        },
+        init: function (obj) {
+            this._this = this,
+                this.cloumn = obj.cloumn,
+                this.silder = obj.silder,
+                this.spacing = obj.spacing || 100,
+                this.curr = obj.curr || "curr";
+                
+            if (!this.cloumn) return;
+            this.win_evet();
+        }
+                
+    }
+    win.scroll_highlight = scroll_highlight;
+})(jQuery, window, document)
+               
+$(function () {
+    scroll_highlight({
+        cloumn: "#main1 .m-cloumn",
+        silder: "#menu1 a",
+        spacing: 80,
+        curr: "curr"
+    })
+                
+    scroll_highlight({
+        cloumn: "#main2 .m-cloumn",
+        silder: "#menu2 a",
+        spacing: 80,
+        curr: "curr"
+    })
+                
+})
+        </code>
+        </pre>
     <div class="main" id="main1">
         <div class="m-cloumn" id="c1">
             <h2>栏目1内容</h2>

@@ -10,6 +10,12 @@
 
 <body>
     <p>此测试代码实现的是.css方法</p>
+    <p> 试试在控制台输入：</p>
+    <pre>
+        <code>
+myJquery4('ul').css('color','red')
+        </code>
+    </pre>
     <ul>
         <li>111</li>
         <li>222</li>
@@ -17,10 +23,9 @@
     </ul>
 </body>
 <script>
-
     var myJquery4 = function (selector) {
         //console.log(this) //window
-        return new jqNodes(selector) 
+        return new jqNodes(selector)
         //new会创造一个对象实例，对象实例继承自构造函数的prototype,这里是jqNodes.prototype
         //每次调用 myJquery4(selector) 都应新创建一个jqNodes对象，并且每个对象都要有那些方法
     }
