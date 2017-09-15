@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 100px;
+        }
+
+        .m-cloumn {
+            height: 300px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            box-shadow: 0 5px 5px -5px #f00;
+        }
+
+        .right-cloumn {
+            position: fixed;
+            width: 120px;
+            top: 0px;
+            right: 50px;
+            border: 1px solid #ddd;
+        }
+
+        #menu2 {
+            top: 300px;
+        }
+
+        .right-cloumn a {
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .right-cloumn .curr {
+            background: #F0AD4E;
+            color: #fff;
+        }
+    </style>
+
+</head>
+
+<body>
+    <p>修改成了可以有多个固定导航的</p>
+    <div class="main" id="main1">
+        <div class="m-cloumn" id="c1">
+            <h2>栏目1内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2">
+            <h2>栏目2内容</h2>
+        </div>
+        <div class="m-cloumn" id="c3">
+            <h2>栏目3内容</h2>
+        </div>
+        <div class="m-cloumn" id="c4">
+            <h2>栏目4内容</h2>
+        </div>
+        <div class="m-cloumn" id="c5">
+            <h2>栏目5内容</h2>
+        </div>
+        <div class="m-cloumn" id="c6">
+            <h2>栏目6内容</h2>
+        </div>
+        <div class="m-cloumn" id="c7">
+            <h2>栏目7内容</h2>
+        </div>
+
+    </div>
+    <div class="right-cloumn" id="menu1">
+        <a href="#c1" class="curr">栏目1</a>
+        <a href="#c2">栏目2</a>
+        <a href="#c3">栏目3</a>
+        <a href="#c4">栏目4</a>
+        <a href="#c5">栏目5</a>
+        <a href="#c6">栏目6</a>
+        <a href="#c7">栏目7</a>
+    </div>
+
+
+    <div class="main" id="main2">
+        <div class="m-cloumn" id="c2-1">
+            <h2>栏目2-1内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2-2">
+            <h2>栏目2-2内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2-3">
+            <h2>栏目2-3内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2-4">
+            <h2>栏目2-4内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2-5">
+            <h2>栏目2-5内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2-6">
+            <h2>栏目2-6内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2-7">
+            <h2>栏目2-7内容</h2>
+        </div>
+
+    </div>
+    <div class="right-cloumn" id="menu2">
+        <a href="#c2-1">栏目2-1</a>
+        <a href="#c2-2">栏目2-2</a>
+        <a href="#c2-3">栏目2-3</a>
+        <a href="#c2-4">栏目2-4</a>
+        <a href="#c2-5">栏目2-5</a>
+        <a href="#c2-6">栏目2-6</a>
+        <a href="#c2-7">栏目2-7</a>
+    </div>
+
+    <script src="../jquery.min.js" type="text/javascript"></script>
+    <script>
+        (function ($, win, doc) {
+            var scroll_highlight = function (obj) {
+                return new scroll_rsilder(obj)
+            }
+            var scroll_rsilder = function (obj) {
+                this.init(obj)
+            }
+            scroll_rsilder.prototype = {
+                win_evet: function () {
+                    var _this = this._this
+                    $(win).on("scroll", function () {
+                        var scrollTop = $(this).scrollTop();
+                        _this.ele_evet(scrollTop);
+
+                    })
+                },
+                ele_evet: function (scrollTop) {
+                    var _this = this._this
+                    $(this.cloumn).each(function (index) {
+                        var offsetTop = $(this).offset().top;
+                        var xd = parseInt(offsetTop - scrollTop);
+
+                        //console.log(index, offsetTop, scrollTop, xd, _this)
+
+                        if (xd < _this.spacing) {
+                            $(_this.silder).eq(index).addClass(_this.curr).siblings().removeClass();
+                        }
+                    })
+                },
+                init: function (obj) {
+                    this._this = this,
+                        this.cloumn = obj.cloumn,
+                        this.silder = obj.silder,
+                        this.spacing = obj.spacing || 100,
+                        this.curr = obj.curr || "curr";
+
+                    if (!this.cloumn) return;
+                    this.win_evet();
+                }
+
+            }
+            win.scroll_highlight = scroll_highlight;
+        })(jQuery, window, document)
+    </script>
+    <script>
+        $(function () {
+            scroll_highlight({
+                cloumn: "#main1 .m-cloumn",
+                silder: "#menu1 a",
+                spacing: 80,
+                curr: "curr"
+            })
+
+            scroll_highlight({
+                cloumn: "#main2 .m-cloumn",
+                silder: "#menu2 a",
+                spacing: 80,
+                curr: "curr"
+            })
+
+        })
+    </script>
+
+
+
+</body>
+
+</html>

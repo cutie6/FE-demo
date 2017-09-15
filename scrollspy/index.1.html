@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .main {
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        .m-cloumn {
+            height: 300px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            box-shadow: 0 5px 5px -5px #f00;
+        }
+
+        .right-cloumn {
+            position: fixed;
+            width: 120px;
+            top: 100px;
+            right: 50px;
+            border: 1px solid #ddd;
+        }
+
+        .right-cloumn a {
+            display: block;
+            height: 40px;
+            line-height: 40px;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+        }
+
+        .right-cloumn .curr {
+            background: #F0AD4E;
+            color: #fff;
+        }
+    </style>
+
+</head>
+
+<body>
+    <p>参考 http://blog.csdn.net/sinrryzhang/article/details/51177774</p>
+    <div class="main">
+        <div class="m-cloumn" id="c1">
+            <h2>栏目1内容</h2>
+        </div>
+        <div class="m-cloumn" id="c2">
+            <h2>栏目2内容</h2>
+        </div>
+        <div class="m-cloumn" id="c3">
+            <h2>栏目3内容</h2>
+        </div>
+        <div class="m-cloumn" id="c4">
+            <h2>栏目4内容</h2>
+        </div>
+        <div class="m-cloumn" id="c5">
+            <h2>栏目5内容</h2>
+        </div>
+        <div class="m-cloumn" id="c6">
+            <h2>栏目6内容</h2>
+        </div>
+        <div class="m-cloumn" id="c7">
+            <h2>栏目7内容</h2>
+        </div>
+
+    </div>
+    <div class="right-cloumn">
+        <a href="#c1" class="curr">栏目1</a>
+        <a href="#c2">栏目2</a>
+        <a href="#c3">栏目3</a>
+        <a href="#c4">栏目4</a>
+        <a href="#c5">栏目5</a>
+        <a href="#c6">栏目6</a>
+        <a href="#c7">栏目7</a>
+    </div>
+
+    <script src="../jquery.min.js" type="text/javascript"></script>
+    <script>
+        (function ($, win, doc) {
+            var scroll_rsilder = {
+                win_evet: function () {
+                    $(win).bind("scroll", function () {
+                        var scrollTop = $(this).scrollTop();
+                        _this.ele_evet(scrollTop);
+
+                    })
+                },
+                ele_evet: function (scrollTop) {
+                    $(this.cloumn).each(function (index) {
+                        var offsetTop = $(this).offset().top;
+                        xd = parseInt(offsetTop - scrollTop);
+                        //console.log(index,offsetTop,scrollTop,xd)
+
+                        if (xd < _this.spacing){
+                            console.log('index')
+                            console.log(index)
+                            $(_this.silder).eq(index).addClass(_this.curr).siblings().removeClass();
+                        } 
+                    })
+                },
+                init: function (obj) {
+                    _this = this,
+                        this.cloumn = obj.cloumn,
+                        this.silder = obj.silder,
+                        this.spacing = obj.spacing || 100,
+                        this.curr = obj.curr || "curr";
+                    if (!this.cloumn) return;
+                    this.win_evet();
+                }
+
+            }
+            win.scroll_rsilder = scroll_rsilder;
+        })(jQuery, window, document)
+    </script>
+    <script>
+        $(function () {
+            scroll_rsilder.init({
+                cloumn: ".m-cloumn",
+                silder: ".right-cloumn a",
+                spacing: 80,
+                curr: "curr"
+            })
+
+          
+
+        })
+    </script>
+
+
+
+</body>
+
+</html>
