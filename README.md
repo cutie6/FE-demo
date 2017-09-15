@@ -1,2 +1,5 @@
-# js-exercise
-js练习集合 目前是看前端面试题而做的练习
+
+###FE-demo
+ 
+demo网页链接：
+https://lujing2.github.io/FE-demo/
