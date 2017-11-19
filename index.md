@@ -7,5 +7,8 @@
 
 [自己实现jQuery与其中的.css()方法](myJquery)
 
+[算法练习](algorithm)
+
+
 
 

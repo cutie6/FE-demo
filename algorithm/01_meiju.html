@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style type="text/css">
+        table {
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        td {
+            width: 20px;
+            height: 20px;
+            border: 1px solid grey;
+        }
+    </style>
+</head>
+
+<body>
+    <p>画家问题 简化版本 就只有一个案例</p>
+    <a href="https://www.coursera.org/learn/suanfa-jichu/programming/ZZOH8/bian-cheng-zuo-ye-mei-ju
+">https://www.coursera.org/learn/suanfa-jichu/programming/ZZOH8/bian-cheng-zuo-ye-mei-ju
+    </a>
+
+    <!-- <div>
+        <label for="">墙大小：</label>
+        <input type="text" id="size">
+    </div> -->
+    <p>输入:</p>
+    <pre>
+        每一行包含n个字符。第i行的第j个字符表示位于位置(i,j)上的砖的颜色。“w”表示白砖，“y”表示黄砖。
+        例如：
+         wwwyy 
+         yywww 
+         wwwyy
+    </pre>
+    <div>
+        <label for="">墙初始状态：</label>
+        <textarea name="" id="init_state" cols="30" rows="10"></textarea>
+    </div>
+    <button onclick="compute()">运行</button>
+    <div id="show_div">
+        <!-- <table id="show_table">
+            <tr>
+                <td style="background-color:red;"></td>
+                <td></td>
+            </tr>
+        </table> -->
+    </div>
+
+
+</body>
+<script>
+    function compute() {
+        // let size = document.getElementById('size').value;
+        let init_state = document.getElementById('init_state').value;
+
+        //获得二维数组
+        let _init_state_arr = init_state.split('\n');
+
+        var new_arr = [], init_state_arr = [];
+        for (let i = 0, len = _init_state_arr.length; i < len; i++) {
+
+            var row_arr = _init_state_arr[i].split('');
+            init_state_arr.push(row_arr)
+
+        }
+
+        //这时候要是打印init_state_arr，打印的其实是修改后的状态
+
+        let rows = init_state_arr.length;
+        let cols = init_state_arr[0].length;
+
+        render(init_state_arr);
+
+
+        setTimeout(function () {
+            draw(rows, cols, init_state_arr);
+        }, 10);
+
+    }
+
+    function draw(rows, cols, init_state_arr) {
+        //算法开始，得出一个二维数组，也得出需要画的次数，看哪个表格需要图绘,需要涂绘的写1，不需要的写0，第一行不动，第二行根据第一行来
+        let draw_arr = [], draw_times = 0;
+        for (let j = 0; j < rows; j++) {
+            draw_arr[j] = [];
+        }
+        for (let j = 0; j < cols; j++) {
+            draw_arr[0][j] = 0;
+        }
+
+
+        for (let i = 1; i < rows; i++) {
+
+            for (let j = 0; j < cols; j++) {
+
+                // var _init_state_arr = JSON.parse(JSON.stringify(init_state_arr))
+                if (init_state_arr[i - 1][j] == 'w') {
+                    console.log(i, j)
+
+                    draw_arr[i][j] = 1;
+                    draw_times++;
+
+                    // 改变旁边几点
+                    //上
+                    init_state_arr[i - 1][j] = 'y';
+                    //左
+                    if (j - 1 >= 0) {
+
+                        init_state_arr[i][j - 1] = switch_color(init_state_arr[i][j - 1])
+
+                    }
+
+                    //自己
+                    init_state_arr[i][j] = switch_color(init_state_arr[i][j]);
+
+                    //右
+                    if (j + 1 < cols) {
+                        init_state_arr[i][j + 1] = switch_color(init_state_arr[i][j + 1])
+
+                    }
+
+                    //下
+                    if (i + 1 < rows) {
+                        init_state_arr[i + 1][j] = switch_color(init_state_arr[i + 1][j]);
+                    }
+
+                    console.log(init_state_arr)
+
+                    // init_state_arr = JSON.parse(JSON.stringify(_init_state_arr));//把原来数据也得改下
+                    render(init_state_arr, i, j)
+
+                } else {
+                    draw_arr[i][j] = 0;
+                }
+
+
+
+
+            }
+        }
+    }
+
+    function render(init_state_arr, indi, indj) {
+        let rows = init_state_arr.length;
+        let cols = init_state_arr[0].length;
+
+        //展示表格
+        let _html = '';
+        for (let i = 0; i < rows; i++) {
+            _html += '<tr>';
+            for (let j = 0; j < cols; j++) {
+                _html += `<td style="background-color:${init_state_arr[i][j] == 'w' ? 'white' : 'yellow'};"></td>`
+            }
+            _html += '</tr>';
+
+        }
+
+        _html = `<table>${_html}</table>`;
+
+        if (indi != undefined && indj != undefined) {
+            _html = `<p>描绘${indi}行${indj}列：</p>${_html}`
+        } else {
+            _html = `<p>初始墙壁：</p>${_html}`
+        }
+
+        // document.getElementById('show_table').innerHTML = '';
+        // document.getElementById('show_table').innerHTML = _html; //.innerHTML写复杂点的内容,如果一开始里边有东西，总是会最后执行；如果一开始innerHTML就为空就没问题
+
+        let _div = document.getElementById('show_div');
+        _div.innerHTML += _html;
+
+        // sleep(2000)
+        // console.log(_html)
+    }
+
+    //用传统方法也是最后执行
+    function render_dom(init_state_arr) {
+        let rows = init_state_arr.length;
+        let cols = init_state_arr[0].length;
+
+        //展示表格
+        var table = document.getElementById('show_table');
+        for (let i = 0; i < rows; i++) {
+            var tr = document.createElement('tr');
+            for (let j = 0; j < cols; j++) {
+                var td = document.createElement('td');
+                td.style = `background-color:${init_state_arr[i][j] == 'w' ? 'white' : 'yellow'};`;
+                tr.appendChild(td)
+            }
+            table.appendChild(tr);
+
+        }
+
+    }
+
+    function switch_color(cell) {
+        cell = (cell == 'w') ? 'y' : 'w';
+        return cell;
+    }
+
+    function sleep(numberMillis) {
+        var now = new Date();
+        var exitTime = now.getTime() + numberMillis;
+        while (true) {
+            now = new Date();
+            if (now.getTime() > exitTime)
+                return;
+        }
+    }
+
+</script>
+
+</html>
