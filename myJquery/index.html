@@ -1,60 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>myJquery</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>myJquery</title>
-</head>
-
-<body>
-    <p>此测试代码实现的是.css方法</p>
-    <p> 试试在控制台输入：</p>
-    <pre>
+    <body>
+        <p>此测试代码实现的是.css方法</p>
+        <p>试试在控制台输入：</p>
+        <pre>
         <code>
-myJquery4('ul').css('color','red')
+myJquery('ul').css('color','red')
         </code>
     </pre>
-    <ul>
-        <li>111</li>
-        <li>222</li>
-        <li>333</li>
-    </ul>
-</body>
-<script>
-    var myJquery4 = function (selector) {
-        //console.log(this) //window
-        return new jqNodes(selector)
-        //new会创造一个对象实例，对象实例继承自构造函数的prototype,这里是jqNodes.prototype
-        //每次调用 myJquery4(selector) 都应新创建一个jqNodes对象，并且每个对象都要有那些方法
-    }
+        <ul>
+            <li>111</li>
+            <li>222</li>
+            <li>333</li>
+        </ul>
+        <p>实现：</p>
+        <pre>
+            <code>
+var myJquery = function(selector) {
+//console.log(this) //window
+return new jqNodes(selector);
+//new会创造一个对象实例，对象实例继承自构造函数的prototype,这里是jqNodes.prototype
+//每次调用 myJquery(selector) 都应新创建一个jqNodes对象
+};
 
-    var jqNodes = function (selector) {
-        console.log(this)
-        //1.以new调用时this指向即将创建的新对象 
-        //2.直接调用则指向 window
-        this._items = document.querySelectorAll(selector)
-        return this
-    }
+var jqNodes = function(selector) {
+//console.log(this);
+//1.以new调用时this指向即将创建的新对象
+//2.直接调用则指向 window
+this._items = document.querySelectorAll(selector);
+return this;
+};
 
-    var myJqueryCore = {
-        //放核心方法
-        css: function () {
-            console.log(this) //myJquery4('li').css('color') 这样调用时是作为new出来的对象的原型里的方法调用的，this指向new出来的对象,这里是new出来的jqNodes对象
-            var prop = arguments[0],
-                val = arguments[1]
-            if (!val) return getComputedStyle(this._items[0]).getPropertyValue(prop);
+var myJqueryCore = {
+//放核心方法
+css: function() {
+//console.log(this); //myJquery('li').css('color') 这样调用时是作为new出来的对象的原型里的方法调用的，this指向new出来的对象,这里是new出来的jqNodes对象
+var prop = arguments[0],
+val = arguments[1];
+if (!val)
+return getComputedStyle(this._items[0]).getPropertyValue(
+prop
+);
 
-            Array.prototype.map.call(this._items, function (c) {
-                return c.setAttribute('style', prop + ':' + val)
-            })
-            return this
-        }
-    }
+Array.prototype.map.call(this._items, function(c) {
+return c.setAttribute("style", prop + ":" + val);
+});
+return this;
+}
+};
 
-    jqNodes.prototype = myJqueryCore //关键
+jqNodes.prototype = myJqueryCore; //关键
+            </code>
+        </pre>
+    </body>
+    <script>
+        var myJquery = function(selector) {
+            //console.log(this) //window
+            return new jqNodes(selector);
+            //new会创造一个对象实例，对象实例继承自构造函数的prototype,这里是jqNodes.prototype
+            //每次调用 myJquery(selector) 都应新创建一个jqNodes对象
+        };
 
-</script>
+        var jqNodes = function(selector) {
+            //console.log(this);
+            //1.以new调用时this指向即将创建的新对象
+            //2.直接调用则指向 window
+            this._items = document.querySelectorAll(selector);
+            return this;
+        };
 
+        var myJqueryCore = {
+            //放核心方法
+            css: function() {
+                //console.log(this); //myJquery('li').css('color') 这样调用时是作为new出来的对象的原型里的方法调用的，this指向new出来的对象,这里是new出来的jqNodes对象
+                var prop = arguments[0],
+                    val = arguments[1];
+                if (!val)
+                    return getComputedStyle(this._items[0]).getPropertyValue(
+                        prop
+                    );
+
+                Array.prototype.map.call(this._items, function(c) {
+                    return c.setAttribute("style", prop + ":" + val);
+                });
+                return this;
+            }
+        };
+
+        jqNodes.prototype = myJqueryCore; //关键
+    </script>
 </html>
